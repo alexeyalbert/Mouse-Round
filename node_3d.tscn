@@ -1,0 +1,216 @@
+[gd_scene load_steps=23 format=3 uid="uid://dru60kpstsqwb"]
+
+[ext_resource type="PackedScene" uid="uid://br01chminlckq" path="res://player.tscn" id="1_7xctj"]
+[ext_resource type="Shader" path="res://assets/shaders/psx_camera_shader.gdshader" id="2_dhif4"]
+[ext_resource type="Texture2D" uid="uid://dc2oksutid7x3" path="res://addons/godot-prototype-texture/PNG/grid_blue_512x512.png" id="3_3330t"]
+[ext_resource type="Shader" path="res://assets/shaders/pixelate.gdshader" id="3_hf63t"]
+[ext_resource type="Texture2D" uid="uid://d0vgjv7ia3wty" path="res://addons/godot-prototype-texture/PNG/grid_orange_512x512.png" id="4_7ceqi"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_efan8"]
+render_priority = 0
+shader = ExtResource("2_dhif4")
+shader_parameter/enable_fog = true
+shader_parameter/fog_color = Color(0.494118, 0.494118, 0.494118, 1)
+shader_parameter/noise_color = Color(0, 0, 0, 1)
+shader_parameter/fog_distance = 18.0
+shader_parameter/fog_fade_range = 16.0
+shader_parameter/enable_noise = true
+shader_parameter/noise_time_fac = 4.0
+shader_parameter/enable_color_limitation = true
+shader_parameter/color_levels = 96
+shader_parameter/enable_dithering = true
+shader_parameter/dither_strength = 1.0
+shader_parameter/enable_pixelation = false
+shader_parameter/pixel_size = 512
+
+[sub_resource type="QuadMesh" id="QuadMesh_xxjdv"]
+material = SubResource("ShaderMaterial_efan8")
+size = Vector2(2, 2)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_eo7vp"]
+render_priority = 0
+shader = ExtResource("3_hf63t")
+
+[sub_resource type="QuadMesh" id="QuadMesh_bdy5v"]
+material = SubResource("ShaderMaterial_eo7vp")
+size = Vector2(2, 2)
+
+[sub_resource type="Animation" id="Animation_iqpnf"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:spot_range")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [11.3377]
+}
+
+[sub_resource type="Animation" id="Animation_b63gq"]
+resource_name = "flashlight_flicker_on"
+length = 1.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.125, 0.2, 0.25, 0.35, 0.45, 0.575),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [false, true, false, true, false, true, false, true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:spot_range")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5, 1.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [3.0, 8.293, 11.3377]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8aitb"]
+_data = {
+"RESET": SubResource("Animation_iqpnf"),
+"flashlight_flicker_on": SubResource("Animation_b63gq")
+}
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sac6i"]
+sky_top_color = Color(0.0745098, 0.486275, 0.658824, 1)
+sky_curve = 0.0699775
+ground_bottom_color = Color(0.180392, 0.67451, 0.937255, 1)
+ground_horizon_color = Color(1, 1, 1, 1)
+ground_curve = 0.0263903
+ground_energy_multiplier = 1.79
+sun_angle_max = 0.0
+sun_curve = 31.1904
+
+[sub_resource type="Sky" id="Sky_xac0c"]
+sky_material = SubResource("ProceduralSkyMaterial_sac6i")
+
+[sub_resource type="Environment" id="Environment_tq4cp"]
+background_mode = 3
+background_energy_multiplier = 3.87
+sky = SubResource("Sky_xac0c")
+ambient_light_source = 1
+ambient_light_color = Color(1, 1, 1, 1)
+ssr_enabled = true
+ssao_enabled = true
+ssao_radius = 1.32
+ssil_enabled = true
+ssil_radius = 8.37
+sdfgi_enabled = true
+sdfgi_use_occlusion = true
+sdfgi_cascades = 8
+sdfgi_energy = 0.15
+glow_normalized = true
+glow_intensity = 1.98
+glow_bloom = 0.39
+fog_enabled = true
+fog_light_color = Color(0.298039, 0.552941, 0.701961, 1)
+fog_light_energy = 3.06
+fog_sun_scatter = 1.0
+fog_density = 0.001
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lktsm"]
+size = Vector3(48.2826, 1, 72.301)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dal2b"]
+albedo_texture = ExtResource("3_3330t")
+uv1_scale = Vector3(30, 30, 30)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_u8tfv"]
+material = SubResource("StandardMaterial3D_dal2b")
+size = Vector2(30, 30)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ood5v"]
+size = Vector3(30, 0.25, 30)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jflcq"]
+albedo_texture = ExtResource("4_7ceqi")
+uv1_scale = Vector3(3, 2, 2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_7v0fo"]
+material = SubResource("StandardMaterial3D_jflcq")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_627g4"]
+
+[node name="Node3D" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.79957, 7.66016, -1.26396)
+
+[node name="player" parent="." instance=ExtResource("1_7xctj")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -2.95639e-05, 0.288727, 8.88906)
+
+[node name="Camera" type="Camera3D" parent="player"]
+transform = Transform3D(0.999957, 2.99753e-05, -0.00928451, 0, 0.999995, 0.00322851, 0.00928456, -0.00322837, 0.999952, -0.0689926, 0.581976, -0.276869)
+fov = 85.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="player/Camera"]
+transform = Transform3D(1, -1.88735e-11, 1.14703e-08, 1.03955e-11, 1, 8.70887e-10, -1.77044e-09, -3.66434e-09, 1, 0.00355673, -0.0265102, -0.522558)
+mesh = SubResource("QuadMesh_xxjdv")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="player/Camera"]
+transform = Transform3D(1, -4.08429e-12, 6.23331e-09, 1.29208e-11, 1, 1.01184e-10, 9.20229e-11, -1.56893e-09, 1, -0.00560474, 0.0019455, -0.603661)
+visible = false
+mesh = SubResource("QuadMesh_bdy5v")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="player/Camera"]
+transform = Transform3D(0.999957, 2.97395e-12, 0.00928456, 2.99753e-05, 0.999995, -0.00322837, -0.00928451, 0.00322851, 0.999952, 0.0715604, -0.582865, 0.274336)
+spot_range = 11.3377
+spot_angle = 29.9269
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="player/Camera/SpotLight3D"]
+autoplay = "flashlight_flicker_on"
+libraries = {
+"": SubResource("AnimationLibrary_8aitb")
+}
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_tq4cp")
+
+[node name="respawn collision" type="Area3D" parent="."]
+transform = Transform3D(-0.999957, -2.99751e-05, 0.00928447, 0, 0.999995, 0.00322851, -0.00928451, 0.00322837, -0.999952, 0.0372552, 3.18482, 3.69186)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="respawn collision"]
+transform = Transform3D(10, -2.70721e-12, -8.95792e-09, 2.76529e-11, 0.979, 9.93713e-09, 2.12374e-08, -2.30641e-09, 4.218, 2.08165e-12, -15, 2.08165e-12)
+shape = SubResource("BoxShape3D_lktsm")
+
+[node name="ground" type="StaticBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="ground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.36467, 0)
+mesh = SubResource("PlaneMesh_u8tfv")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.5107, 0)
+shape = SubResource("BoxShape3D_ood5v")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.727928, -0.59073, 0.348078, 0.599081, 0.794891, 0.0961783, -0.333499, 0.138516, 0.932519, 8.82177, -4.61509, 11.1699)
+light_energy = 0.1
+shadow_enabled = true
+shadow_opacity = 0.9
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.80767, -3.63076, -9.19778)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+mesh = SubResource("BoxMesh_7v0fo")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("BoxShape3D_627g4")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="."]
+transform = Transform3D(0.49637, -0.560576, 0.662851, 0.130746, 0.803121, 0.581294, -0.858209, -0.201872, 0.471938, -3.87959, -1.88204, -8.64178)
+spot_range = 10.0
+
+[connection signal="body_entered" from="respawn collision" to="player" method="_on_area_3d_body_entered"]
